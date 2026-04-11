@@ -15,6 +15,8 @@ from auth import register_user, login_user, verify_token
 from flask_mail import Mail, Message
 from datetime import datetime, timedelta
 from file_handler import get_file_context
+from celery_app import celery
+from tasks import process_query
 import secrets
 import os
 
@@ -31,7 +33,7 @@ app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_EMAIL')
 
 mail = Mail(app)
 CORS(app)
-
+app.config['CELERY_BROKER_URL'] = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 DAILY_LIMIT = 30

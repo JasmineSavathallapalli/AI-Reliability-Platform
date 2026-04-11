@@ -130,7 +130,7 @@ export default function Dashboard() {
           loading: false
         } : m
       ));
-    } catch {
+    } catch (err) {
       setMessages(prev => prev.map(m =>
         m.loading ? { ...m, ai_response: '❌ Failed to connect.', loading: false } : m
       ));
