@@ -12,4 +12,3 @@ pillow
 langfuse==2.7.3
 celery
 redis
-deepeval

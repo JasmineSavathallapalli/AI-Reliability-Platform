@@ -13,7 +13,6 @@ from database import (save_query, get_query_count_today,
                       get_all_users)
 from auth import register_user, login_user, verify_token
 from flask_mail import Mail, Message 
-from deep_evaluation import simple_deep_evaluate
 from datetime import datetime, timedelta
 from file_handler import get_file_context
 from celery_app import celery
@@ -184,9 +183,7 @@ def query():
         }), 400
 
     evaluation = evaluate_response(user_message, reply)
-    deep_eval = simple_deep_evaluate(user_message, reply)
-    evaluation["deep_eval"] = deep_eval["deep_eval"]
-    evaluation["deep_overall_passed"] = deep_eval["overall_passed"]
+   
 
     save_query(user["user_id"], user_message, reply, False,
            None, evaluation, conversation_id)
