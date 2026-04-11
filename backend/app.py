@@ -1,5 +1,5 @@
 from pyexpat.errors import messages
-
+from observability import trace_query, trace_blocked_query
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from groq import Groq
@@ -141,6 +141,7 @@ def query():
     if not input_check["safe"]:
         save_query(user["user_id"], user_message, None, True,
                    input_check["reason"], {}, conversation_id)
+        trace_blocked_query(user["user_id"], user_message, input_check["reason"], "input")
         return jsonify({
             "blocked": True,
             "stage": "input",
@@ -172,6 +173,7 @@ def query():
     if not output_check["safe"]:
         save_query(user["user_id"], user_message, reply, True,
                    output_check["reason"], {}, conversation_id)
+        trace_blocked_query(user["user_id"], user_message, output_check["reason"], "output")
         return jsonify({
             "blocked": True,
             "stage": "output",
@@ -183,7 +185,7 @@ def query():
     evaluation = evaluate_response(user_message, reply)
     save_query(user["user_id"], user_message, reply, False,
                None, evaluation, conversation_id)
-
+    trace_query(user["user_id"], user_message, reply, evaluation, False)
     return jsonify({
         "blocked": False,
         "user_message": user_message,

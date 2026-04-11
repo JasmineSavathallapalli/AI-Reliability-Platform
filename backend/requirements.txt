@@ -1,4 +1,12 @@
 flask
+flask-cors
+flask-mail
 groq
 python-dotenv
-flask-cors
+psycopg2-binary
+bcrypt
+pyjwt
+cloudinary
+PyPDF2
+pillow
+langfuse
