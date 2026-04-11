@@ -31,7 +31,7 @@ export default function Home() {
     setError('');
     const endpoint = isLogin ? '/auth/login' : '/auth/register';
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
+      const res = await fetch(`https://ai-reliability-backend.onrender.com${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

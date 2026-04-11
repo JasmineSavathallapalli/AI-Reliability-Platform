@@ -32,13 +32,13 @@ export default function Admin() {
     setRefreshing(true);
     try {
       const [statsRes, queriesRes, usersRes] = await Promise.all([
-        fetch('${process.env.NEXT_PUBLIC_API_URL}/admin/stats', {
+        fetch('https://ai-reliability-backend.onrender.com/admin/stats', {
           headers: { Authorization: `Bearer ${getToken()}` }
         }),
-        fetch('${process.env.NEXT_PUBLIC_API_URL}/admin/queries', {
+        fetch('https://ai-reliability-backend.onrender.com/admin/queries', {
           headers: { Authorization: `Bearer ${getToken()}` }
         }),
-        fetch('${process.env.NEXT_PUBLIC_API_URL}/admin/users', {
+        fetch('https://ai-reliability-backend.onrender.com/admin/users', {
           headers: { Authorization: `Bearer ${getToken()}` }
         })
       ]);
@@ -60,7 +60,7 @@ export default function Admin() {
 
   const handleBlockUser = async (userId: number) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/users/${userId}/block`, {
+      const res = await fetch(`https://ai-reliability-backend.onrender.com/admin/users/${userId}/block`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${getToken()}` }
       });

@@ -62,7 +62,7 @@ export default function Dashboard() {
 
   const fetchConversations = async () => {
     try {
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/conversations', {
+      const res = await fetch('https://ai-reliability-backend.onrender.com/conversations', {
         headers: { Authorization: `Bearer ${getToken()}` }
       });
       const data = await res.json();
@@ -73,7 +73,7 @@ export default function Dashboard() {
   const loadConversation = async (convId: number) => {
     setCurrentConvId(convId);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/conversations/${convId}/messages`, {
+      const res = await fetch(`https://ai-reliability-backend.onrender.com/conversations/${convId}/messages`, {
         headers: { Authorization: `Bearer ${getToken()}` }
       });
       const data = await res.json();
@@ -99,7 +99,7 @@ export default function Dashboard() {
     }]);
 
     try {
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/query', {
+      const res = await fetch('https://ai-reliability-backend.onrender.com/query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -163,7 +163,7 @@ export default function Dashboard() {
 
   const deleteConversation = async (convId: number) => {
     if (!confirm('Delete this chat?')) return;
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/conversations/${convId}`, {
+    await fetch(`https://ai-reliability-backend.onrender.com/conversations/${convId}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getToken()}` }
     });
@@ -176,7 +176,7 @@ export default function Dashboard() {
 
   const clearHistory = async () => {
     if (!confirm('Clear all chat history?')) return;
-    await fetch('${process.env.NEXT_PUBLIC_API_URL}/history/clear', {
+    await fetch('https://ai-reliability-backend.onrender.com/history/clear', {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${getToken()}` }
     });
@@ -202,7 +202,7 @@ export default function Dashboard() {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/upload', {
+      const res = await fetch('https://ai-reliability-backend.onrender.com/upload', {
         method: 'POST',
         headers: { Authorization: `Bearer ${getToken()}` },
         body: formData
