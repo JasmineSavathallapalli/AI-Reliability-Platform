@@ -32,13 +32,13 @@ export default function Admin() {
     setRefreshing(true);
     try {
       const [statsRes, queriesRes, usersRes] = await Promise.all([
-        fetch('http://localhost:5000/admin/stats', {
+        fetch('${process.env.NEXT_PUBLIC_API_URL}/admin/stats', {
           headers: { Authorization: `Bearer ${getToken()}` }
         }),
-        fetch('http://localhost:5000/admin/queries', {
+        fetch('${process.env.NEXT_PUBLIC_API_URL}/admin/queries', {
           headers: { Authorization: `Bearer ${getToken()}` }
         }),
-        fetch('http://localhost:5000/admin/users', {
+        fetch('${process.env.NEXT_PUBLIC_API_URL}/admin/users', {
           headers: { Authorization: `Bearer ${getToken()}` }
         })
       ]);
@@ -60,7 +60,7 @@ export default function Admin() {
 
   const handleBlockUser = async (userId: number) => {
     try {
-      const res = await fetch(`http://localhost:5000/admin/users/${userId}/block`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/users/${userId}/block`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${getToken()}` }
       });
