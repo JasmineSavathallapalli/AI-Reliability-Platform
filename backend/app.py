@@ -127,23 +127,23 @@ def query():
     data = request.get_json()
     user_message = data.get("message", "")
     conversation_id = data.get("conversation_id")
+    file_context = data.get("file_context")
 
     if not user_message:
         return jsonify({"error": "No message provided"}), 400
 
-    # Create conversation if not provided
     if not conversation_id:
         conversation_id = create_conversation(
             user["user_id"],
             user_message[:40] + "..." if len(user_message) > 40 else user_message
         )
 
-    # ---- INPUT GUARDRAIL ----
     input_check = check_input(user_message)
     if not input_check["safe"]:
         save_query(user["user_id"], user_message, None, True,
                    input_check["reason"], {}, conversation_id)
-        trace_blocked_query(user["user_id"], user_message, input_check["reason"], "input")
+        trace_blocked_query(user["user_id"], user_message,
+                           input_check["reason"], "input")
         return jsonify({
             "blocked": True,
             "stage": "input",
@@ -151,31 +151,30 @@ def query():
             "conversation_id": conversation_id
         }), 400
 
-    # ---- CALL LLM ----
-    # Get conversation history for context
     history = get_conversation_messages(conversation_id, user["user_id"])
     messages = [{"role": "system", "content": "You are a helpful assistant."}]
     for msg in history:
         messages.append({"role": "user", "content": msg["user_message"]})
         if msg["ai_response"]:
             messages.append({"role": "assistant", "content": msg["ai_response"]})
-    file_context = data.get("file_context")
+
     final_message = user_message
     if file_context:
         final_message = f"{file_context['content']}\n\nUser question: {user_message}"
     messages.append({"role": "user", "content": final_message})
+
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=messages
     )
     reply = response.choices[0].message.content
 
-    # ---- OUTPUT GUARDRAIL ----
     output_check = check_output(reply)
     if not output_check["safe"]:
         save_query(user["user_id"], user_message, reply, True,
                    output_check["reason"], {}, conversation_id)
-        trace_blocked_query(user["user_id"], user_message, output_check["reason"], "output")
+        trace_blocked_query(user["user_id"], user_message,
+                           output_check["reason"], "output")
         return jsonify({
             "blocked": True,
             "stage": "output",
@@ -183,11 +182,11 @@ def query():
             "conversation_id": conversation_id
         }), 400
 
-    # ---- EVALUATE ----
     evaluation = evaluate_response(user_message, reply)
     save_query(user["user_id"], user_message, reply, False,
                None, evaluation, conversation_id)
     trace_query(user["user_id"], user_message, reply, evaluation, False)
+
     return jsonify({
         "blocked": False,
         "user_message": user_message,
@@ -197,7 +196,6 @@ def query():
         "queries_used": query_count + 1,
         "queries_remaining": DAILY_LIMIT - query_count - 1
     })
-
 
 # ─── HISTORY ────────────────────────────────────────────────
 
