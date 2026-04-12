@@ -9,6 +9,5 @@ pyjwt
 cloudinary
 PyPDF2
 pillow
-langfuse==2.7.3
 celery
 redis

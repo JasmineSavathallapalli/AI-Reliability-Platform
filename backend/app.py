@@ -1,5 +1,4 @@
 from pyexpat.errors import messages
-from observability import trace_query, trace_blocked_query
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from groq import Groq
