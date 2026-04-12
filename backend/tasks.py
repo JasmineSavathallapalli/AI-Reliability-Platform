@@ -7,7 +7,7 @@ from guardrails import check_input, check_output
 from evaluator import evaluate_response
 from database import (save_query, get_query_count_today,
                       create_conversation, get_conversation_messages)
-from observability import trace_query, trace_blocked_query
+
 import os
 
 load_dotenv()
@@ -31,8 +31,7 @@ def process_query(self, user_id, user_message, conversation_id, file_context=Non
         if not input_check["safe"]:
             save_query(user_id, user_message, None, True,
                       input_check["reason"], {}, conversation_id)
-            trace_blocked_query(user_id, user_message,
-                              input_check["reason"], "input")
+            
             return {
                 "blocked": True,
                 "stage": "input",
@@ -71,8 +70,7 @@ def process_query(self, user_id, user_message, conversation_id, file_context=Non
         if not output_check["safe"]:
             save_query(user_id, user_message, reply, True,
                       output_check["reason"], {}, conversation_id)
-            trace_blocked_query(user_id, user_message,
-                              output_check["reason"], "output")
+            
             return {
                 "blocked": True,
                 "stage": "output",
@@ -86,7 +84,6 @@ def process_query(self, user_id, user_message, conversation_id, file_context=Non
         evaluation = evaluate_response(user_message, reply)
         save_query(user_id, user_message, reply, False,
                   None, evaluation, conversation_id)
-        trace_query(user_id, user_message, reply, evaluation, False)
 
         return {
             "blocked": False,
