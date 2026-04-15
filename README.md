@@ -70,45 +70,9 @@ User → Input Guardrail → LLM → Output Guardrail → Evaluation Engine → 
 
 ##  System Architecture
 
-┌─────────────────────────────────────────────┐
-│              Next.js Frontend                │
-│         (Vercel - Global CDN)                │
-└──────────────────┬──────────────────────────┘
-│ HTTPS
-┌──────────────────▼──────────────────────────┐
-│              Flask REST API                  │
-│           (Render - Free Tier)               │
-│                                              │
-│  ┌─────────────┐    ┌──────────────────┐    │
-│  │   Auth Layer │    │  File Handler    │    │
-│  │  JWT + bcrypt│    │  Cloudinary      │    │
-│  └─────────────┘    └──────────────────┘    │
-│                                              │
-│  ┌─────────────────────────────────────┐    │
-│  │         Input Guardrail             │    │
-│  │   (blocks harmful prompts)          │    │
-│  └──────────────┬──────────────────────┘    │
-│                 │                            │
-│  ┌──────────────▼──────────────────────┐    │
-│  │         Groq LLM API                │    │
-│  │      (LLaMA 3.3 70B)                │    │
-│  └──────────────┬──────────────────────┘    │
-│                 │                            │
-│  ┌──────────────▼──────────────────────┐    │
-│  │        Output Guardrail             │    │
-│  │   (filters unsafe responses)        │    │
-│  └──────────────┬──────────────────────┘    │
-│                 │                            │
-│  ┌──────────────▼──────────────────────┐    │
-│  │       Evaluation Engine             │    │
-│  │  (relevance, quality, grade)        │    │
-│  └──────────────┬──────────────────────┘    │
-└─────────────────┼────────────────────────────┘
-│
-┌─────────────────▼──────────────────────────┐
-│         PostgreSQL (Neon Cloud)             │
-│    users, conversations, queries, scores    │
-└─────────────────────────────────────────────┘
+<p align="center">
+  <img src="system-architecture.png" width="700"/>
+</p>
 
 ## Getting Started
 
@@ -193,34 +157,32 @@ REDIS_URL=redis://localhost:6379/0
 
 ## Project Structure
 ai-reliability-platform/
-│
 ├── backend/
-│   ├── app.py                # Main Flask API & routes
-│   ├── auth.py               # JWT authentication logic
-│   ├── database.py           # PostgreSQL operations
-│   ├── guardrails.py         # Input/output safety checks
-│   ├── evaluator.py          # Response quality scoring
-│   ├── file_handler.py       # PDF/image/text processing
-│   ├── deep_evaluation.py    # Advanced evaluation metrics
-│   ├── celery_app.py         # Async task configuration
-│   ├── tasks.py              # Celery background tasks
-│   ├── requirements.txt      # Python dependencies
-│   └── Dockerfile
+│ ├── app.py # Main Flask API & routes
+│ ├── auth.py # JWT authentication logic
+│ ├── database.py # PostgreSQL operations
+│ ├── guardrails.py # Input/output safety checks
+│ ├── evaluator.py # Response quality scoring
+│ ├── deep_evaluation.py # Advanced evaluation metrics
+│ ├── celery_app.py # Async task configuration
+│ ├── tasks.py # Background tasks
+│ ├── requirements.txt
+│ └── Dockerfile
 │
 ├── frontend/
-│   └── app/
-│       ├── page.tsx           # Login/Signup page
-│       ├── dashboard/
-│       │   └── page.tsx       # Main chat interface
-│       ├── admin/
-│       │   └── page.tsx       # Admin dashboard
-│       ├── forgot-password/
-│       │   └── page.tsx       # Password reset request
-│       └── reset-password/
-│           └── page.tsx       # Password reset form
+│ └── app/
+│ ├── page.tsx # Login/Signup page
+│ ├── dashboard/
+│ │ └── page.tsx # Main chat UI
+│ ├── admin/
+│ │ └── page.tsx # Admin dashboard
+│ ├── forgot-password/
+│ │ └── page.tsx
+│ └── reset-password/
+│ └── page.tsx
 │
-├── docker-compose.yml         # Docker orchestration
-├── render.yaml                # Render deployment config
+├── docker-compose.yml
+├── render.yaml
 └── README.md
 
 ## API Reference
