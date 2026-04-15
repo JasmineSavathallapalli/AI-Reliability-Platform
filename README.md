@@ -71,7 +71,7 @@ User → Input Guardrail → LLM → Output Guardrail → Evaluation Engine → 
 ##  System Architecture
 
 <p align="center">
-  <img src="system-architecture.png" width="700"/>
+  <img src="system-architecture.png" width="200"/>
 </p>
 
 ## Getting Started
