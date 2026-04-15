@@ -155,36 +155,6 @@ LANGFUSE_HOST=https://cloud.langfuse.com
 REDIS_URL=redis://localhost:6379/0
 ```
 
-## Project Structure
-ai-reliability-platform/
-├── backend/
-│ ├── app.py # Main Flask API & routes
-│ ├── auth.py # JWT authentication logic
-│ ├── database.py # PostgreSQL operations
-│ ├── guardrails.py # Input/output safety checks
-│ ├── evaluator.py # Response quality scoring
-│ ├── deep_evaluation.py # Advanced evaluation metrics
-│ ├── celery_app.py # Async task configuration
-│ ├── tasks.py # Background tasks
-│ ├── requirements.txt
-│ └── Dockerfile
-│
-├── frontend/
-│ └── app/
-│ ├── page.tsx # Login/Signup page
-│ ├── dashboard/
-│ │ └── page.tsx # Main chat UI
-│ ├── admin/
-│ │ └── page.tsx # Admin dashboard
-│ ├── forgot-password/
-│ │ └── page.tsx
-│ └── reset-password/
-│ └── page.tsx
-│
-├── docker-compose.yml
-├── render.yaml
-└── README.md
-
 ## API Reference
 
 | Method | Endpoint | Description | Auth |
