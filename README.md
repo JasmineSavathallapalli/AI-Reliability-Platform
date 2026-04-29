@@ -69,6 +69,7 @@ User → Input Guardrail → LLM → Output Guardrail → Evaluation Engine → 
 
 ##  System Architecture
 <img src="system-architecture.png" width="350"/>
+> Scalable layered deployment architecture for reliable AI interaction.
 
 ## Getting Started
 
