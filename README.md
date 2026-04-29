@@ -27,7 +27,6 @@ User → Input Guardrail → LLM → Output Guardrail → Evaluation Engine → 
 
 ### User Features
 - JWT-based Login / Signup  
-- ChatGPT-style interface  
 - Edit and resend messages  
 - File uploads (PDF, image, text)  
 - Chat history management  
@@ -54,7 +53,7 @@ User → Input Guardrail → LLM → Output Guardrail → Evaluation Engine → 
 
 ## Tech Stack
 
-| Layer       | Technology                     |
+| Layer       | Technology                   |
 |------------|------------------------------|
 | Frontend    | Next.js, Tailwind CSS        |
 | Backend     | Flask (Python)               |
